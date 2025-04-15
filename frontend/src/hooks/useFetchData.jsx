@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { token } from "../utils/config";
 
-const useFetchData = (url) => {
+ const useFetchData = (url) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -14,9 +14,18 @@ const useFetchData = (url) => {
             Authorization: `Bearer ${token}`,
           },
         });
-
+        
+        const contentType = res.headers.get("content-type");
+        console.log("Response content type:", contentType);
+        
+        if (!contentType || !contentType.includes("application/json")) {
+          const text = await res.text();
+          console.error("Server did not return JSON. Raw response:", text);
+          throw new Error("Server error: Invalid JSON response");
+        }
+        
         const result = await res.json();
-
+        
         if (!res.ok) {
           throw new Error(result.message + " 😵");
         }
