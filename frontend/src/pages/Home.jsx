@@ -1,14 +1,15 @@
 import React from "react";
-import heroImg01 from "../assets/images/hero-img01.png";
-import heroImg02 from "../assets/images/hero-img02.png";
-import heroImg03 from "../assets/images/hero-img03.png";
-import faqImg from "../assets/images/faq-img.png";
+import heroImg01 from "../assets/images/heroImg01.jpg";
+import heroImg02 from "../assets/images/heroImg02.jpg";
+import heroImg03 from "../assets/images/heroImg03.jpg";
+import herosection from "../assets/images/herosection.png";
+import faqImg from "../assets/images/faqImg.png";
 import icon01 from "../assets/images/icon01.png";
 import icon02 from "../assets/images/icon02.png";
 import icon03 from "../assets/images/icon03.png";
 import avatarIcon from "../assets/images/avatar-icon.png";
 import videoIcon from "../assets/images/video-icon.png";
-import featureImg from "../assets/images/feature-img.png";
+import featureImg from "../assets/images/featureimg.jpg";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import About from "../componenets/About/About";
@@ -28,8 +29,8 @@ const Home = () => {
           <div className="flex flex-col lg:flex-row gap-[90px] items-center justify-between">
             {/* --Hero Content--- */}
             <div>
-              <div className="lg:w-[570px]">
-                <h1 className="text-[36px] leading-[46px] text-headingColor font-[800] md:text-[60px] md:leading-[70px]">
+              <div className="lg:w-[570px] ">
+                <h1 className="text-[34px] leading-[46px] text-headingColor font-[600] md:text-[60px] md:leading-[70px]">
                   Empowering Health, Embracing Life Together.
                 </h1>
                 <p className="text__para">
@@ -72,7 +73,14 @@ const Home = () => {
             </div>
             {/* --Hero Content--- */}
 
-            <div className="flex gap-[30px] justify-end">
+            <div className="w-[570px]">
+              <img
+                src={herosection}
+                alt=""
+                className="md:w-[600px] mr-[30px] w-[490px] mb-[30px] pr-5"
+              />
+            </div>
+            {/* <div className="flex gap-[30px] justify-end">
               <div>
                 <img src={heroImg01} className="w-full " alt="" />
               </div>
@@ -80,7 +88,7 @@ const Home = () => {
                 <img src={heroImg02} className="w-full mb-[30px]" alt="" />
                 <img src={heroImg03} className="w-full " alt="" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

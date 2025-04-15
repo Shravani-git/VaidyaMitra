@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef , useContext} from "react";
 import logo from "../../assets/images/logo.png";
 import { NavLink, Link } from "react-router-dom";
-import userImg from "../../assets/images/avatar.png";
+import userImg from "../../assets/images/default-profile.png";
 import { BiMenu } from "react-icons/bi";
+import { AuthContext } from "../../context/AuthContext";
 const navLinks = [
   {
     path: "/home",
@@ -25,7 +26,7 @@ const navLinks = [
 const Header = () => {
   const headerRef = useRef(null);
   const menuRef = useRef(null);
-
+   const{user, token, role}=useContext(AuthContext)
   const handleStickyHeader = () => {
     window.addEventListener("scroll", () => {
       if (
@@ -46,7 +47,7 @@ const Header = () => {
   const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
 
   return (
-    <header className="header flex items-center " ref={headerRef}>
+    <header className="header flex items-center h-20 " ref={headerRef}>
       <div className="container mx-5 max-w-full">
         <div className="flex items-center justify-between">
           {/*---Logo---*/}
@@ -74,19 +75,34 @@ const Header = () => {
           </div>
           {/* ---Nav Right--- */}
           <div className="flex items-center gap-4">
-            <div className="hidden">
-              <Link to="/">
-                <figure className="w-[35px] h-[35px] rounded-full cursor-pointer">
-                  <img src={userImg} className="w-full rounded-full" alt="" />
-                </figure>
-              </Link>
-            </div>
 
-            <Link to="/login">
-              <button className="bg-primaryColor text-[16px] py-2 px-6 text-white font-[600] h-[44px] flex items-center justify-center rounded-[50px]">
-                Login
-              </button>
-            </Link>
+            {
+              token && user ?
+              <div className="pt-4">
+  <Link
+    className="flex flex-col items-center justify-center p-2 h-[100px]" // increased height
+    to={`${role === 'doctor' ? '/doctors/profile/me' : '/users/profile/me'}`}
+  >
+    <figure className="w-[50px] h-[50px] rounded-full overflow-hidden">
+      <img
+        src={user?.photo ? user.photo : userImg}
+        className="w-full h-full object-cover"
+        alt="profile"
+      />
+    </figure>
+   
+  </Link>
+</div>
+ :
+             <Link to="/login">
+             <button className="bg-primaryColor text-[16px] py-2 px-6 text-white font-[600] h-[44px] flex items-center justify-center rounded-[50px]">
+               Login
+             </button>
+           </Link>
+            }
+            
+
+            
 
             <span className="md:hidden" onClick={toggleMenu}>
               <BiMenu className="w-6 h-6 cursor-pointer" />

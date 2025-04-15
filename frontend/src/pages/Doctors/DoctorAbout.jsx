@@ -6,14 +6,14 @@ const DoctorAbout = () => {
         <h3 className="text-[20px] leading-[30px] text-headingColor font-semibold flex items-center gap-2">
           About{" "}
           <span className="text-irisBlueColor font-bold text-[24px] leading-9">
-            Muhibur Rahman
+            Dr. Priya Sharma
           </span>
         </h3>
         <p className="text__para">
-          Dr. Muhibur Rahman is a highly skilled surgeon with extensive
-          experience in performing complex surgical procedures. Known for his
+          Dr. Dr. Priya Sharma is a highly skilled surgeon with extensive
+          experience in performing complex surgical procedures. Known for her
           precision, patient care, and commitment to staying updated with the
-          latest advancements in surgical techniques, he is dedicated to
+          latest advancements in surgical techniques, she is dedicated to
           improving patient outcomes and delivering compassionate care.
         </p>
       </div>
@@ -32,7 +32,7 @@ const DoctorAbout = () => {
               </p>
             </div>
             <p className="text-[14px] leading-5 font-medium text-textColor">
-              New Apollo Hospital, New York.
+              New Apollo Hospital, India.
             </p>
           </li>
           <li className="flex flex-col sm:flex-row sm:justify-between sm:items-end md:gap-5 mb-[30px] ">
@@ -46,7 +46,7 @@ const DoctorAbout = () => {
             </div>
 
             <p className="text-[14px] leading-5 font-medium text-textColor">
-              New Apollo Hospital, New York.
+              New Apollo Hospital, India.
             </p>
           </li>
         </ul>

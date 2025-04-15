@@ -1,6 +1,10 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import heroImg01 from "../assets/images/doctor01.png"; // Import your image
+import { BASE_URL } from "../utils/config";
+import { toast } from "react-toastify";
+import { AuthContext } from "../context/AuthContext.jsx";
+import HashLoader from "react-spinners/HashLoader.js";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,9 +12,51 @@ const Login = () => {
     password: "",
   });
 
+  const [loading,setLoading]=useState(false);
+  const  navigate=useNavigate()
+  const {dispatch} =useContext(AuthContext)
+
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const submitHandler = async (event) => {
+      event.preventDefault();
+      setLoading(true);
+
+      try {
+        const res = await fetch(`${BASE_URL}/auth/login`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const result = await res.json();
+  
+        if (!res.ok) {
+          throw new Error(result.message);
+        }
+
+        dispatch({
+          type:'LOGIN_SUCCESS',
+          payload:{
+            user:result.data,
+            role:result.role,
+            token:result.token,
+          }
+        })
+
+        console.log(result,'login data')
+  
+        setLoading(false);
+        toast.success(result.message);
+        navigate("/home");
+      } catch (err) {
+        toast.error(err.message);
+        setLoading(false);
+      }
+    };
 
   return (
     <section className="hero__section h-screen flex flex-col lg:flex-row justify-between items-center">
@@ -32,7 +78,7 @@ const Login = () => {
           <p className="text__para text-textColor text-[22px] leading-6 mb-10">
             Schedule your Appointment
           </p>
-          <form className="py-4 md:py-0">
+          <form onSubmit={submitHandler} className="py-4 md:py-0">
             <div className="mb-5">
               <input
                 type="email"
@@ -58,7 +104,7 @@ const Login = () => {
                 type="submit"
                 className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-2 py-3"
               >
-                Login
+                {loading ? <HashLoader size={25} color="#fff"/>:'Login'}
               </button>
             </div>
             <p className="mt-5 text-textColor text-center">

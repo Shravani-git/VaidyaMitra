@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import doctorImg from "../../assets/images/doctor-img02.png";
+import doctorImg from "../../assets/images/doctor-img2.jpg";
 import starIcon from "../../assets/images/Star.png";
 import DoctorAbout from "./DoctorAbout";
 import Feedback from "./Feedback";
@@ -24,7 +24,7 @@ leading-4 lg:text-[16px] lg:leading-7 font-semibold rounded"
                   Surgeon
                 </span>
                 <h3 className="text-headingColor text-[22px] leading-9 mt-3 font-bold">
-                  Muhibur Rahman
+                Dr. Priya Sharma
                 </h3>
                 <div className="flex items-center gap-[6px]">
                   <span
