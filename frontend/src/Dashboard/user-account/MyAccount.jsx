@@ -1,8 +1,7 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import userImg from "../../assets/images/doctor-img01.png";
 import MyBookings from "./MyBookings";
-import Profile from "../../routes/Profile";
+import Profile from "../user-account/Profile";
 import useGetProfile from "../../hooks/useFetchData";
 import { BASE_URL } from "../../utils/config";
 import Loading from "../../componenets/Loader/Loading";
@@ -15,7 +14,10 @@ const MyAccount = () => {
   console.log(userData,"userdata")
   const handleLogOut = () => {
     dispatch({ type: "LOGOUT" });
+    localStorage.removeItem("userPhoto");
   };
+
+
   return (
     <section>
       <div className="max-w-[1170px] px-5 mx-auto">
@@ -31,24 +33,24 @@ const MyAccount = () => {
             <div className="flex items-center justify-center">
               <figure className="w-[100px] h-[100px] rounded-full border-2 border-solid border-primaryColor">
                 <img
-                  src={userImg}
+                  src={userData.photo}
                   alt=""
-                  className="w-full h-full rounded-full"
+                  className="w-full h-full rounded-full object-cover"
                 />
               </figure>
             </div>
 
             <div className="text-center mt-4">
               <h3 className="text-[18px] leading-[30px] text-headingColor font-bold ">
-                Muhibur Rahman
+                {userData.name}
               </h3>
               <p className="text-textColor text-[15px] leading-6 font-medium ">
-                example@gmail.com
+                {userData.email}
               </p>
               <p className="text-textColor text-[15px] leading-6 font-medium ">
                 Blood Type:
                 <span className="ml-2 text-headingColor text-[22px] leading-8">
-                  O-
+                 {userData.bloodType}
                 </span>
               </p>
             </div>
@@ -66,13 +68,13 @@ const MyAccount = () => {
             </div>
           </div>
 
-          <div className="md:col-span-2 md:px-[30px]">
+          <div className="md:col-span-2 md:px-[30px] ">
             <div>
               <button
                 onClick={() => setTab("bookings")}
                 className={`${
-                  tab === "bookings" && "bg-primaryColor text-white font-normal"
-                } p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
+                  tab === "bookings" && "bg-primaryColor text-white font-normal my-2"
+                } p-2 mr-5 px-5 rounded-md my-2 text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
               >
                 My Bookings
               </button>
@@ -80,15 +82,15 @@ const MyAccount = () => {
               <button
                 onClick={() => setTab("settings")}
                 className={`${
-                  tab === "settings" && "bg-primaryColor text-white font-normal"
-                } p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
+                  tab === "settings" && "bg-primaryColor text-white font-normal my-2"
+                } p-2 mr-5 px-5 my-2 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
               >
                 Profile Settings
               </button>
             </div>
 
             {tab === "bookings" && <MyBookings />}
-            {tab === "settings" && <Profile />}
+            {tab === "settings" && <Profile user={userData}/>}
           </div>
         </div>
         )}

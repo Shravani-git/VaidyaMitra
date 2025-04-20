@@ -1,9 +1,9 @@
-import { useEffect, useRef , useContext} from "react";
+import { useEffect, useState, useRef , useContext} from "react";
 import logo from "../../assets/images/logo.png";
 import { NavLink, Link } from "react-router-dom";
-import userImg from "../../assets/images/default-profile.png";
 import { BiMenu } from "react-icons/bi";
 import { AuthContext } from "../../context/AuthContext";
+
 const navLinks = [
   {
     path: "/home",
@@ -24,6 +24,7 @@ const navLinks = [
 ];
 
 const Header = () => {
+  const [userPhoto, setUserPhoto] = useState(null);
   const headerRef = useRef(null);
   const menuRef = useRef(null);
    const{user, token, role}=useContext(AuthContext)
@@ -43,6 +44,10 @@ const Header = () => {
     handleStickyHeader();
     return () => window.removeEventListener("scroll", handleStickyHeader);
   });
+  useEffect(() => {
+    const photo = localStorage.getItem("userPhoto");
+    setUserPhoto(photo);
+  }, []);
 
   const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
 
@@ -83,9 +88,9 @@ const Header = () => {
     className="flex flex-col items-center justify-center p-2 h-[100px]" // increased height
     to={`${role === 'doctor' ? '/doctors/profile/me' : '/users/profile/me'}`}
   >
-    <figure className="w-[50px] h-[50px] rounded-full overflow-hidden">
+     <figure className="w-[50px] h-[50px] rounded-full overflow-hidden">
       <img
-        src={user?.photo ? user.photo : userImg}
+        src={userPhoto }
         className="w-full h-full object-cover"
         alt="profile"
       />

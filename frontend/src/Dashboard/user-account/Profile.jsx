@@ -1,25 +1,28 @@
-import { useState, useSyncExternalStore } from "react";
-import avatar from "../assets/images/doctor-img01.png";
+import { useEffect, useState} from "react";
 import {  useNavigate } from "react-router-dom";
-import { BASE_URL } from "../utils/config";
+import { BASE_URL, token } from "../../utils/config";
 import { toast } from "react-toastify";
 import HashLoader from "react-spinners/HashLoader";
-import uploadImageToCloudinary from "../utils/uploadCloudinary";
-const Profile = () => {
+import uploadImageToCloudinary from "../../utils/uploadCloudinary";
+const Profile = ({user}) => {
 
     const [selectedFile, setSelectedFile] = useState(null);
-      const [previewURL, setPreviewURL] = useState("");
       const [loading, setLoading] = useState(false);
       const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: "",
-        photo: selectedFile,
+        photo:null,
         gender: "",
-        role: "patient",
+        bloodType:"",
       });
     
       const navigate = useNavigate();
+
+      useEffect(()=>{
+          setFormData({name:user.name, email:user.email, photo:user.photo, gender:user.gender, bloodType:user.bloodType})
+      },[user]
+      )
     
       const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +33,6 @@ const Profile = () => {
     
         try {
           const data = await uploadImageToCloudinary(file);
-          setPreviewURL(data.url);
           setSelectedFile(data.url);
           setFormData({ ...formData, photo: data.url });
         } catch (error) {
@@ -43,10 +45,11 @@ const Profile = () => {
         setLoading(true);
     
         try {
-          const res = await fetch(`${BASE_URL}/auth/register`, {
-            method: "post",
+          const res = await fetch(`${BASE_URL}/users/${user._id}`, {
+            method: "put",
             headers: {
               "Content-Type": "application/json",
+              Authorization:`Bearer ${token}`
             },
             body: JSON.stringify(formData),
           });
@@ -58,7 +61,7 @@ const Profile = () => {
     
           setLoading(false);
           toast.success(message);
-          navigate("/login");
+          navigate("/users/profile/me");
         } catch (err) {
           toast.error(err.message);
           setLoading(false);
@@ -66,7 +69,7 @@ const Profile = () => {
       };
 
   return (
-    <div>
+    <div className="mt-10">
          <form onSubmit={submitHandler}>
               <div className="mb-5">
                 <input
@@ -87,7 +90,8 @@ const Profile = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full py-3 pr-4 border-b border-solid bg-inherit border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer"
-                  required
+                  aria-readonly
+                  readOnly
                 />
               </div>
               <div className="mb-5">
@@ -98,26 +102,20 @@ const Profile = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   className="w-full py-3 pr-4 border-b border-solid bg-inherit border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer"
+                />
+              </div>
+              <div className="mb-5">
+                <input
+                  type="text"
+                  placeholder="Blood Type"
+                  name="bloodType"
+                  value={formData.bloodType}
+                  onChange={handleInputChange}
+                  className="w-full py-3 pr-4 border-b border-solid bg-inherit border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer"
                   required
                 />
               </div>
               <div className="mb-5 flex items-center justify-between">
-                <label className="text-headingColor font-bold text-[16px] leading-7">
-                  Are you a :
-                  <select
-                    name="role"
-                    value={formData.role}
-                    onChange={handleInputChange}
-                    className="text-textColor font-semibold text-[15px] leading-7 px-4 py-3 focus:outline-none bg-white"
-                  >
-                    <option value="patient" className="bg-white">
-                      Patient
-                    </option>
-                    <option value="doctor" className="bg-white">
-                      Doctor
-                    </option>
-                  </select>
-                </label>
 
                 <label className="text-headingColor font-bold text-[16px] leading-7">
                   Gender:
@@ -136,10 +134,10 @@ const Profile = () => {
               </div>
 
               <div className="mb-5 items-center gap-3 flex">
-                {selectedFile && (
+                {formData.photo && (
                   <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
                     <img
-                      src={previewURL}
+                      src={formData.photo}
                       alt=""
                       className="w-full rounded-full h-full object-cover"
                     />
@@ -158,7 +156,7 @@ const Profile = () => {
                     htmlFor="customFile"
                     className="absolute top-0 left-0 w-full h-full flex items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 overflow-hidden bg-[#0066ff46] text-headingColor font-semibold rounded-lg truncate cursor-pointer"
                   >
-                    Upload Photo
+                    {selectedFile ? selectedFile.name :'Upload Photo'}
                   </label>
                 </div>
               </div>
@@ -169,7 +167,7 @@ const Profile = () => {
                   type="submit"
                   className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-2 py-3"
                 >
-                  {loading ? <HashLoader size={35} color="#ffffff" /> : "Signup"}
+                  {loading ? <HashLoader size={25} color="#ffffff" /> : "Update"}
                 </button>
               </div>
              

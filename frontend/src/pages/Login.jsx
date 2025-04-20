@@ -33,7 +33,7 @@ const Login = () => {
           body: JSON.stringify(formData),
         });
         const result = await res.json();
-  
+        
         if (!res.ok) {
           throw new Error(result.message);
         }
@@ -47,6 +47,7 @@ const Login = () => {
           }
         })
 
+        // localStorage.setItem("userPhoto", result.data.photo);
         console.log(result,'login data')
   
         setLoading(false);
