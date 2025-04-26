@@ -7,11 +7,13 @@ import DoctorAbout from "../../pages/Doctors/DoctorAbout";
 import starIcon from "../../assets/images/Star.png";
 import Tabs from "./Tabs";
 import Profile from "./Profile";
+import Appointments from "./Appointments";
 const Dashboard = () => {
   const { data, loading, error } = useGetProfile(
     `${BASE_URL}/doctors/profile/me`
   );
-  localStorage.setItem("userPhoto", data.photo);
+
+
 
 
   const [tab, setTab] = useState("overview");
@@ -89,7 +91,7 @@ const Dashboard = () => {
                     />
                   </div>
                 )}
-                {tab === "appointments" && <div>Appointents</div>}
+                {tab === "appointments" && <Appointments doctorData={data}/>}
                 {tab === "settings" && <Profile doctorData={data} />}
               </div>
             </div>

@@ -10,6 +10,7 @@ const Tabs = ({tab,setTab}) => {
   const handleLogOut = () => {
     dispatch({ type: 'LOGOUT' });
     navigate('/');
+    localStorage.removeItem('userPhoto');
   };
 
   return (

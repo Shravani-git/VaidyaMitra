@@ -243,6 +243,8 @@ const Profile = ({doctorData}) => {
                   <option value="surgeon">Surgeon</option>
                   <option value="neurologist">Neurologist</option>
                   <option value="dermatologist">Dermatologist</option>
+                  <option value="cardiologist">Cardiologist</option>
+
                 </select>
               </div>
               <div>
@@ -399,7 +401,6 @@ const Profile = ({doctorData}) => {
                     className="form__input py-3.5"
                     onChange={(e) => handleTimeSlotChange(e, index)}
                   >
-                    <option value="">Select</option>
                     <option value="saturday">Saturday</option>
                     <option value="sunday">Sunday</option>
                     <option value="monday">Monday</option>

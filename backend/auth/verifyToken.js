@@ -15,8 +15,10 @@ export const authenticate = async (req, res, next) => {
   
       // Attach decoded user info to request
       req.userId = decoded.id;
+      console.log("Decoded token:", decoded);
       req.userRole = decoded.role; // NOTE: Changed this to avoid confusion later
-  
+      console.log("req.userId:", req.userId);
+
       next();
     } catch (err) {
       if (err.name === 'TokenExpiredError') {

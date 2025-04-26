@@ -1,5 +1,5 @@
 
-
+import Appointment from "../models/AppointmentSchema.js";
 import Doctor from "../models/DoctorScheme.js";
 import Booking from "../models/BookingScheme.js";
 export const updatedDoctor =async(req,res)=>{
@@ -94,3 +94,39 @@ export const getDoctorProfile =async(req,res)=>{
     }
    
 }
+
+
+// GET /api/appointments/doctor
+// export const getDoctorAppointments = async (req, res) => {
+//     try {
+//       const appointments = await Appointment.find({ doctorId: req.userId })
+//         .populate("userId", "name email") // to show patient details
+//         .sort({ "schedule.date": -1 });
+  
+//       res.status(200).json({
+//         success: true,
+//         message: "Doctor appointments fetched",
+//         data: appointments,
+//       });
+//     } catch (error) {
+//       res.status(500).json({
+//         success: false,
+//         message: "Server error while fetching doctor appointments",
+//       });
+//     }
+//   };
+  
+// GET /appointments/doctor/:doctorId
+export const getAppointmentsByDoctor = async (req, res) => {
+    try {
+      const { doctorId } = req.params;
+  
+      const appointments = await Appointment.find({ doctorId });
+  
+      res.status(200).json({ success: true, data: appointments });
+    } catch (err) {
+      console.error("Error fetching appointments for doctor:", err);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  };
+  

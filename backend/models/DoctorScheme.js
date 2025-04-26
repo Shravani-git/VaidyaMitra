@@ -39,6 +39,19 @@ const DoctorSchema = new mongoose.Schema({
     default: "pending",
   },
   appointments: [{ type: mongoose.Types.ObjectId, ref: "Appointment" }],
+  bookedSlots: [
+    {
+      date: { type: String },   // Format: 'YYYY-MM-DD'
+      time: { type: String },   // Format: 'HH:mm'
+      status: {
+        type: String,
+        enum: ["pending", "scheduled", "cancelled"],
+        default: "pending",
+      },
+      appointmentId: { type: mongoose.Types.ObjectId, ref: "Appointment" },
+    },
+  ],
+  
 });
 
 export default mongoose.model("Doctor", DoctorSchema);

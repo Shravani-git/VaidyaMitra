@@ -47,8 +47,7 @@ const Login = () => {
           }
         })
 
-        // localStorage.setItem("userPhoto", result.data.photo);
-        console.log(result,'login data')
+        localStorage.setItem("userPhoto", result.data.photo);
   
         setLoading(false);
         toast.success(result.message);
