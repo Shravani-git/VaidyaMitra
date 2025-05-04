@@ -26,8 +26,10 @@ const {id} = useParams();
     specialization,
     ticketPrice,
     photo,
+    bookedSlots
   } = doctor;
-  
+  console.log("Doctor fetched: ", doctor);
+    console.log("Booked slots: ", doctor.bookedSlots);
   return (
     <section>
       <div className="max-w-[1170px] px-5 mx-auto">
@@ -100,7 +102,7 @@ leading-4 lg:text-[16px] lg:leading-7 font-semibold rounded"
           </div>
 
           <div>
-            <SidePanel doctorId={doctor._id} name={name} ticketPrice={ticketPrice} timeSlots={timeSlots}/>
+            <SidePanel doctorId={doctor._id} name={name} ticketPrice={ticketPrice} timeSlots={timeSlots}  bookedSlots={bookedSlots}/>
           </div>
         </div>)}
       </div>

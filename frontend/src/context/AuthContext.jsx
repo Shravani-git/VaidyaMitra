@@ -45,7 +45,7 @@ export const AuthContextProvider = ({children})=>{
         localStorage.setItem('token',state.token)
         localStorage.setItem('role',state.role)
     },[state])
-    return <AuthContext.Provider value={{user: state.user,token: state.token,role: state.role,dispatch}}>
+    return (<AuthContext.Provider value={{user: state.user,token: state.token,role: state.role,dispatch}}>
         {children}
-        </AuthContext.Provider>
+        </AuthContext.Provider>)
 }

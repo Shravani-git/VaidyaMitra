@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 import { scheduleAppointment } from "./../../hooks/scheduleAppointment";
 import { cancelAppointment } from "./../../hooks/cancelAppointment";
+import {sendAppointmentConfirmation} from './../../utils/sendEmail'
 import { toast } from "react-toastify";
 import StatCard from "./StatCard";
 import AppointmentModal from "./AppointmentModal";
@@ -17,7 +18,7 @@ const DataTable = ({ columns, data, doctorId }) => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const pageSize = 5;
   const pageCount = Math.ceil(data.length / pageSize);
-
+  
   const paginatedData = data.slice(
     currentPage * pageSize,
     (currentPage + 1) * pageSize
@@ -46,16 +47,42 @@ const DataTable = ({ columns, data, doctorId }) => {
   );
 
   console.log("Fetched appointments:", appointments);
-  const handleSchedule = async (appointmentId) => {
+  const handleSchedule = async (appointment) => {
     try {
-      await scheduleAppointment(appointmentId);
+      await scheduleAppointment(appointment._id);
       toast.success("Appointment scheduled successfully!");
-      setRefreshTrigger((prev) => prev + 1); // Triggers re-fetch
+  
+      const email = appointment?.userId?.email;
+      const name = appointment?.userId?.name;
+  
+      if (!email || !name) {
+        console.error("No email found for the patient");
+        toast.error("Missing email or name for patient.");
+        return;
+      }
+  
+      const doctorName = appointment?.doctorName;
+      const appointmentTime = `${appointment?.schedule?.date} at ${appointment?.schedule?.time}`;
+      const reason = appointment?.reason || "";
+      const notes = appointment?.notes || "";
+  
+      await sendAppointmentConfirmation({
+        toEmail: email,
+        toName: name,
+        doctorName,
+        appointmentTime,
+        reason,
+        notes,
+      });
+  
+      setRefreshTrigger((prev) => prev + 1);
+      toast.success("Appointment confirmation email sent successfully!");
     } catch (err) {
       toast.error("Failed to schedule: " + err.message);
     }
   };
 
+  
   const handleCancel = async (appointmentId) => {
     try {
       await cancelAppointment(appointmentId);
@@ -155,7 +182,7 @@ const DataTable = ({ columns, data, doctorId }) => {
                     <td className="p-3">
                       <div className="flex space-x-2">
                         <button
-                          onClick={() => handleSchedule(appointment._id)}
+                          onClick={() => handleSchedule(appointment)}
                           disabled={appointment.status !== "pending"}
                           className={`px-2 py-1 rounded-full text-sm ${
                             appointment.status !== "pending"

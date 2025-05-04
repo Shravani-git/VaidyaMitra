@@ -1,62 +1,66 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import heroImg01 from "../assets/images/doctor01.png"; // Import your image
 import { BASE_URL } from "../utils/config";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext.jsx";
 import HashLoader from "react-spinners/HashLoader.js";
-
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [loading,setLoading]=useState(false);
-  const  navigate=useNavigate()
-  const {dispatch} =useContext(AuthContext)
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const submitHandler = async (event) => {
-      event.preventDefault();
-      setLoading(true);
+    event.preventDefault();
+    setLoading(true);
 
-      try {
-        const res = await fetch(`${BASE_URL}/auth/login`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-        const result = await res.json();
-        
-        if (!res.ok) {
-          throw new Error(result.message);
-        }
+    try {
+      const res = await fetch(`${BASE_URL}/auth/login`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const result = await res.json();
 
-        dispatch({
-          type:'LOGIN_SUCCESS',
-          payload:{
-            user:result.data,
-            role:result.role,
-            token:result.token,
-          }
-        })
-
-        localStorage.setItem("userPhoto", result.data.photo);
-  
-        setLoading(false);
-        toast.success(result.message);
-        navigate("/home");
-      } catch (err) {
-        toast.error(err.message);
-        setLoading(false);
+      if (!res.ok) {
+        throw new Error(result.message);
       }
-    };
+
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: {
+          user: result.data,
+          role: result.role,
+          token: result.token,
+        },
+      });
+
+      localStorage.setItem("userPhoto", result.data.photo);
+
+      setLoading(false);
+      toast.success(result.message);
+      window.location.href = "/home";
+    } catch (err) {
+      toast.error(err.message);
+      setLoading(false);
+    }
+  };
+
+  const { user, dispatch } = useContext(AuthContext);
+
+
+
+
 
   return (
     <section className="hero__section h-screen flex flex-col lg:flex-row justify-between items-center">
@@ -104,7 +108,7 @@ const Login = () => {
                 type="submit"
                 className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-2 py-3"
               >
-                {loading ? <HashLoader size={25} color="#fff"/>:'Login'}
+                {loading ? <HashLoader size={25} color="#fff" /> : "Login"}
               </button>
             </div>
             <p className="mt-5 text-textColor text-center">

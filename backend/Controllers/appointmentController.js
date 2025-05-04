@@ -16,7 +16,7 @@ export const createAppointment = async (req, res) => {
       notes,
     } = req.body;
 
-    const userId = req.userId; 
+    const userId = req.userId;
 
     if (!patientId || !patientName || !date || !time || !doctorId || !doctorName || !reason || !userId) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -24,6 +24,9 @@ export const createAppointment = async (req, res) => {
 
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) return res.status(404).json({ error: "Doctor not found" });
+
+    const user = await User.findById(userId); // ✅ Fetch user to get email
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     const isSlotTaken = doctor.bookedSlots?.some(
       (slot) => slot.date === date && slot.time === time
@@ -35,13 +38,13 @@ export const createAppointment = async (req, res) => {
 
     const newAppointment = new Appointment({
       appointmentId: uuidv4(),
-      patient: { _id: patientId, name: patientName },
+      patient: { _id: patientId, name: patientName, email: user.email, },
       doctorId,
       doctorName,
       schedule: { date, time },
       reason,
       notes,
-      userId, 
+      userId,
     });
 
     await newAppointment.save();
@@ -53,11 +56,19 @@ export const createAppointment = async (req, res) => {
     await Doctor.findByIdAndUpdate(doctorId, {
       $push: {
         appointments: newAppointment._id,
-        bookedSlots: { date, time, status: "pending" },
+        bookedSlots: {
+          date,
+          time,
+          status: "pending",
+          appointmentId: newAppointment._id, // 🔥 This line adds the appointment reference
+        },
       },
     });
 
-    res.status(201).json({ message: "Appointment created successfully", appointment: newAppointment });
+    res.status(201).json({
+      message: "Appointment created successfully",
+      appointment: newAppointment,
+    });
   } catch (error) {
     console.error("Error creating appointment:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -116,8 +127,22 @@ export const scheduleAppointment = async (req, res) => {
       return res.status(400).json({ success: false, message: "Appointment is not pending" });
     }
 
+    // Update appointment status
     appointment.status = "scheduled";
     await appointment.save();
+
+    // Update doctor's bookedSlots status
+    await Doctor.updateOne(
+      {
+        _id: appointment.doctorId,
+        "bookedSlots.appointmentId": appointment._id,
+      },
+      {
+        $set: {
+          "bookedSlots.$.status": "scheduled",
+        },
+      }
+    );
 
     res.status(200).json({
       success: true,
@@ -129,6 +154,7 @@ export const scheduleAppointment = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
 
 
 export const cancelAppointment = async (req, res) => {
@@ -148,12 +174,26 @@ export const cancelAppointment = async (req, res) => {
       return res.status(400).json({ success: false, message: "Only pending appointments can be canceled" });
     }
 
+    // Update appointment status
     appointment.status = "cancelled";
     await appointment.save();
 
+    // Update doctor's bookedSlots status
+    await Doctor.updateOne(
+      {
+        _id: appointment.doctorId,
+        "bookedSlots.appointmentId": appointment._id,
+      },
+      {
+        $set: {
+          "bookedSlots.$.status": "cancelled",
+        },
+      }
+    );
+
     res.status(200).json({
       success: true,
-      message: "Appointment status updated to canceled",
+      message: "Appointment status updated to cancelled",
       data: appointment,
     });
   } catch (err) {
@@ -161,3 +201,4 @@ export const cancelAppointment = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+

@@ -8,11 +8,13 @@ import "react-toastify/dist/ReactToastify.css"
 import { AuthContextProvider } from "./context/AuthContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
     <AuthContextProvider>
+    <BrowserRouter>
+    
     <ToastContainer theme="dark" position="top-right" autoClose={3000} closeOnClick pauseOnHover={false} />
       <App />
-      </AuthContextProvider>
+      
     </BrowserRouter>
+    </AuthContextProvider>
   </StrictMode>
 );

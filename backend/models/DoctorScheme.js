@@ -51,6 +51,8 @@ const DoctorSchema = new mongoose.Schema({
       appointmentId: { type: mongoose.Types.ObjectId, ref: "Appointment" },
     },
   ],
+
+
   
 });
 

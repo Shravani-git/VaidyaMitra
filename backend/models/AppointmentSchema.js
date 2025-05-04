@@ -8,6 +8,7 @@ const appointmentSchema = new mongoose.Schema({
   patient: {
     _id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true },
+    email: { type: String, required: true }, 
   },
 
   doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor", required: true },

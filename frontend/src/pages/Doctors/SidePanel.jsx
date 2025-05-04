@@ -9,7 +9,7 @@ import {
   generate30MinSlots,
   convertTo24HourFormat,
 } from "../../utils/getDay";
-const SidePanel = ({ doctorId, name, ticketPrice, timeSlots }) => {
+const SidePanel = ({ doctorId, name, ticketPrice, timeSlots, bookedSlots }) => {
   const [showPopup, setShowPopup] = useState(false);
   const today = new Date().toISOString().split("T")[0];
   const [selectedDate, setSelectedDate] = useState(today);
@@ -18,7 +18,6 @@ const SidePanel = ({ doctorId, name, ticketPrice, timeSlots }) => {
   const [notes, setNotes] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { user, dispatch } = useContext(AuthContext);
-
   const handleBookAppointment = async () => {
     setShowPopup(true);
   };
@@ -62,6 +61,12 @@ const SidePanel = ({ doctorId, name, ticketPrice, timeSlots }) => {
       toast.error(err.message);
     }
   };
+
+  const bookedSlotsMap = (bookedSlots || []).reduce((acc, slot) => {
+    if (!acc[slot.date]) acc[slot.date] = [];
+    acc[slot.date].push(slot.time);
+    return acc;
+  }, {});
 
   return (
     <div className="shadow-panelShadow p-3 lg:p-5 rounded-md ">
@@ -156,28 +161,38 @@ const SidePanel = ({ doctorId, name, ticketPrice, timeSlots }) => {
                     const end = convertTo24HourFormat(slotForDay.endingTime);
 
                     const generatedSlots = generate30MinSlots(start, end);
-
+                    
                     return (
                       <div className="flex flex-wrap gap-2 mt-4">
                         {generatedSlots.length === 0 ? (
                           <p>No available slots</p>
                         ) : (
                           generatedSlots.map((slot, index) => {
+                            const isBooked =
+                              bookedSlotsMap[selectedDate] &&
+                              bookedSlotsMap[selectedDate].includes(slot.time);
+                          
                             return (
                               <button
                                 key={index}
                                 type="button"
-                                className={`
-                  py-2 px-3 rounded-md text-center transition
-                  ${
-                    selectedTimeSlot?.time === slot.time
-                      ? "bg-blue-600 text-white"
-                      : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
-                  }
-                `}
-                                onClick={() => setSelectedTimeSlot(slot)}
+                                disabled={isBooked}
+                                onClick={() => {
+                                  if (isBooked) {
+                                    toast.error("This time slot is already booked.");
+                                  } else {
+                                    setSelectedTimeSlot(slot);
+                                  }
+                                }}
+                                className={`py-2 px-3 rounded-md text-center transition ${
+                                  isBooked
+                                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                                    : selectedTimeSlot?.time === slot.time
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
+                                }`}
                               >
-                                {slot.time}
+                                {convertTime(slot.time)} 
                               </button>
                             );
                           })
