@@ -1,7 +1,4 @@
 import React from "react";
-import heroImg01 from "../assets/images/heroImg01.jpg";
-import heroImg02 from "../assets/images/heroImg02.jpg";
-import heroImg03 from "../assets/images/heroImg03.jpg";
 import herosection from "../assets/images/herosection.png";
 import faqImg from "../assets/images/faqImg.png";
 import icon01 from "../assets/images/icon01.png";
@@ -13,7 +10,6 @@ import featureImg from "../assets/images/featureimg.jpg";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import About from "../componenets/About/About";
-import ServiceCard from "../componenets/Services/ServiceCard";
 import ServiceList from "../componenets/Services/ServiceList";
 import DoctorList from "../componenets/Doctors/DoctorList";
 import FaqList from "../componenets/Faq/FaqList";

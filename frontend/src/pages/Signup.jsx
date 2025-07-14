@@ -1,6 +1,5 @@
 import { useState, useSyncExternalStore } from "react";
 import signupImg from "../assets/images/doctor02.jpg";
-import avatar from "../assets/images/doctor-img01.png";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/config";
 import { toast } from "react-toastify";
