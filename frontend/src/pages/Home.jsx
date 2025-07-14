@@ -1,6 +1,6 @@
 import React from "react";
 import herosection from "../assets/images/herosection.png";
-import faqImg from "../assets/images/faqImg.png";
+import faqImg from "../assets/images/faqimg.png";
 import icon01 from "../assets/images/icon01.png";
 import icon02 from "../assets/images/icon02.png";
 import icon03 from "../assets/images/icon03.png";
