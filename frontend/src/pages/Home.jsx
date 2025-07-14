@@ -25,7 +25,7 @@ const Home = () => {
     <>
       {/* ---Hero Section--- */}
       <section className="hero__section pt-[60px]  2xl:h-[800px]">
-        <div className="container mx-10">
+        <div className="container">
           <div className="flex flex-col lg:flex-row gap-[90px] items-center justify-between">
             {/* --Hero Content--- */}
             <div>
@@ -73,7 +73,7 @@ const Home = () => {
             </div>
             {/* --Hero Content--- */}
 
-            <div className="w-[570px]">
+            <div >
               <img
                 src={herosection}
                 alt=""
