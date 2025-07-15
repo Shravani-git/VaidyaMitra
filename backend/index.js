@@ -13,7 +13,7 @@ import appointmentRoute from './Routes/appointment.js'
 dotenv.config()
 
 const app=express()
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 5000
 const corsOptions ={
     origin:true
 };
@@ -45,8 +45,12 @@ app.use('/api/v1/bookings', bookingRoute)  //domain/api/v1/auth/doctor
 app.use('/api/v1/appointments', appointmentRoute);  //domain/api/v1/auth/doctor
 app.listen(port, ()=>{
     connectDB();
-    console.log("Server is running on port "+port);
+    console.log(`Server running on port ${port}`);
 })
+
+console.log("JWT_SECRET_key:", process.env.JWT_SECRET_key);
+console.log("MONGO_URL:", process.env.MONGO_URL);
+console.log("PORT:", process.env.PORT);
 
 // const crypto = require('crypto-browserify');
 // const randomBytes = crypto.randomBytes(16).toString('hex');
