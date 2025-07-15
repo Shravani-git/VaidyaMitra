@@ -8,7 +8,7 @@ const generateToken = user=>{
   if (!secret) {
     throw new Error("JWT_SECRET_KEY is missing in environment variables");
   }
-    return jwt.sign({id:user._id, role:user.role}, process.env.JWT_SECRET_key,{
+    return jwt.sign({id:user._id, role:user.role}, process.env.JWT_SECRET_KEYS,{
         expiresIn:"15d",
     })
 }
