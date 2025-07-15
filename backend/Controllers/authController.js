@@ -4,7 +4,11 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
 const generateToken = user=>{
-    return jwt.sign({id:user._id, role:user.role}, process.env.JWT_SECRET_KEY,{
+     const secret = process.env.JWT_SECRET_KEY;
+  if (!secret) {
+    throw new Error("JWT_SECRET_KEY is missing in environment variables");
+  }
+    return jwt.sign({id:user._id, role:user.role}, process.env.JWT_SECRET_key,{
         expiresIn:"15d",
     })
 }
