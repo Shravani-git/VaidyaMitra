@@ -11,7 +11,7 @@ export const authenticate = async (req, res, next) => {
   
     try {
       const token = authToken.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_key);
   
       // Attach decoded user info to request
       req.userId = decoded.id;
