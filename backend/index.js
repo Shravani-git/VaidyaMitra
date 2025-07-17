@@ -48,7 +48,7 @@ app.listen(port, ()=>{
     console.log(`Server running on port ${port}`);
 })
 
-console.log("JWT_SECRET_key:", process.env.JWT_SECRET_key);
+console.log("JWT_SECRET_KEY:", process.env.JWT_SECRET_KEY);
 console.log("MONGO_URL:", process.env.MONGO_URL);
 console.log("PORT:", process.env.PORT);
 

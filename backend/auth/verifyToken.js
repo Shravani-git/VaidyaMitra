@@ -11,7 +11,7 @@ export const authenticate = async (req, res, next) => {
   
     try {
       const token = authToken.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET_key);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
   
       // Attach decoded user info to request
       req.userId = decoded.id;
@@ -55,9 +55,3 @@ export const authenticate = async (req, res, next) => {
       return res.status(500).json({ success: false, message: "Server error during role check" });
     }
   };
-
-
-
-
-
-  
