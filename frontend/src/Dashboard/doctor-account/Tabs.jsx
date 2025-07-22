@@ -54,7 +54,7 @@ const Tabs = ({tab,setTab}) => {
       Profile
     </button>
 </div>
-    <div className="md:mt-[100px] w-full hidden md:flex flex-col gap-4">
+    <div className="lg:mt-[100px] w-full hidden lg:flex flex-col gap-4">
               <button
                 onClick={handleLogOut}
                 className="w-full bg-[#181A1E] p-3 text-[16px] leading-7 rounded-md text-white"

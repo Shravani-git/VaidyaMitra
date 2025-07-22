@@ -165,7 +165,7 @@ const Profile = ({doctorData}) => {
 
 
   return (
-    <div>
+    <div >
       <h2 className="text-headingColor font-bold text-[24px] leading-9 mb-10">
         Profile Information
       </h2>

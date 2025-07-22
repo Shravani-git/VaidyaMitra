@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [tab, setTab] = useState("overview");
   return (
     <section>
-      <div className="max-w-[1170px] px-5 mx-auto">
+      <div className="max-w-[1170px]  px-5 mx-auto">
         {loading && !error && <Loader />}
         {error && !loading && <Error errMessage={error} />}
         {!error && !loading && (
