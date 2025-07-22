@@ -15,11 +15,12 @@ const Tabs = ({tab,setTab}) => {
 
   return (
     <div>
-  <span className="flex lg:hidden">
-    <BiMenu className="w-6 h-6 cursor-pointer" />
-  </span>
+  {/* <span className="flex lg:hidden">
+    <BiMenu  className="w-6 h-6 cursor-pointer" />
+  </span> */}
 
-  <div className="hidden lg:flex flex-col p-[30px] bg-white shadow-md items-center h-max rounded-md">
+  <div className=" flex flex-col p-[30px] bg-white shadow-md items-center h-max rounded-md">
+    <div className=" flex flex-row lg:flex-col p-[30px] bg-white items-center h-max">
     <button
     onClick={()=>setTab('overview')}
       className={`${
@@ -52,8 +53,8 @@ const Tabs = ({tab,setTab}) => {
     >
       Profile
     </button>
-
-    <div className="mt-[100px] w-full">
+</div>
+    <div className="md:mt-[100px] w-full hidden md:flex flex-col gap-4">
               <button
                 onClick={handleLogOut}
                 className="w-full bg-[#181A1E] p-3 text-[16px] leading-7 rounded-md text-white"

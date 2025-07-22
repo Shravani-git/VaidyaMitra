@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs'
 const generateToken = user=>{
      const secret = process.env.JWT_SECRET_KEY;
   if (!secret) {
-    throw new Error("JWT_SECRET_key is missing in environment variables");
+    throw new Error("JWT_SECRET_KEY is missing in environment variables");
   }
     return jwt.sign({id:user._id, role:user.role}, process.env.JWT_SECRET_KEY,{
         expiresIn:"15d",

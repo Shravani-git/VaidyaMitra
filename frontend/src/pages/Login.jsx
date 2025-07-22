@@ -49,7 +49,7 @@ const Login = () => {
 
       setLoading(false);
       toast.success(result.message);
-      window.location.href = "/home";
+      window.location.href = "/";
     } catch (err) {
       toast.error(err.message);
       setLoading(false);

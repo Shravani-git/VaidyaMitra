@@ -118,6 +118,12 @@ const Profile = ({doctorData}) => {
     handleResuableInputChangeFunc("qualifications", index, event);
   };
 
+  const handleLogOut = () => {
+    dispatch({ type: 'LOGOUT' });
+    navigate('/');
+    localStorage.removeItem('userPhoto');
+  };
+
   const deleteQualification = (e, index) => {
     e.preventDefault();
     deleteItem("qualifications", index);
@@ -486,7 +492,7 @@ const Profile = ({doctorData}) => {
           </div>
         </div>
 
-        <div className="mt-7">
+        <div className="mt-7 flex flex-col gap-4">
           <button
             type="submit"
             onClick={updateProfileHandler}
@@ -494,6 +500,16 @@ const Profile = ({doctorData}) => {
           >
             Update Profile
           </button>
+              <button
+                onClick={handleLogOut}
+                className="w-full bg-[#181A1E] p-3 text-[16px] leading-7 rounded-md text-white"
+              >
+                Logout
+              </button>
+              <button className="w-full bg-red-600 p-3 text-[16px] leading-7 rounded-md text-white">
+                Delete account
+              </button>
+            
         </div>
       </form>
     </div>
