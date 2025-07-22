@@ -64,7 +64,7 @@ VaidyaMitra is a healthcare web application designed to help users access medica
 - Login or Register as a Patient.
 - Browse available doctors.
 - Book an appointment.
-- Get email confirmation of appoitment once doctor schedules the appointment
+- Get email confirmation of appointment once doctor schedules the appointment
 
 ## 🚀 Live Demo
 
